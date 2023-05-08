@@ -1,7 +1,6 @@
 package com.goit.server;
 
 import com.sun.net.httpserver.HttpServer;
-import com.sun.net.httpserver.spi.HttpServerProvider;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;

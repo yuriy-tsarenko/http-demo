@@ -40,7 +40,8 @@ public class SimpleHandler implements HttpHandler {
                 String responseBody = e.getMessage();
                 responseEntity = ResponseEntity.of(responseBody, httpStatus);
             } else {
-                responseEntity = ResponseEntity.of("", 500);
+                final int status = 500;
+                responseEntity = ResponseEntity.of("", status);
             }
         } finally {
             sendResponse(exchange, responseEntity);
@@ -48,7 +49,8 @@ public class SimpleHandler implements HttpHandler {
     }
 
     private ResponseEntity handeDELETE(HttpExchange exchange) throws IOException {
-        return ResponseEntity.of("deleted", 204);
+        final int status = 204;
+        return ResponseEntity.of("deleted", status);
     }
 
     private ResponseEntity handePUT(HttpExchange exchange) {
@@ -58,7 +60,8 @@ public class SimpleHandler implements HttpHandler {
         } catch (Exception e) {
             throw new ServerInternalErrorException("can't read request");
         }
-        return ResponseEntity.of("updated", 200);
+        final int status = 200;
+        return ResponseEntity.of("updated", status);
     }
 
     private ResponseEntity handePOST(HttpExchange exchange) {
@@ -68,11 +71,13 @@ public class SimpleHandler implements HttpHandler {
         } catch (Exception e) {
             throw new ServerInternalErrorException("can't read request");
         }
-        return ResponseEntity.of("created", 201);
+       final int status = 201;
+        return ResponseEntity.of("created", status);
     }
 
     private ResponseEntity handeGET(HttpExchange exchange) {
-        return ResponseEntity.of("deleted", 200);
+        final int status = 200;
+        return ResponseEntity.of("deleted", status);
     }
 
     private static void sendResponse(HttpExchange exchange, ResponseEntity responseEntity) throws IOException {

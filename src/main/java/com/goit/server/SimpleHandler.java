@@ -37,6 +37,8 @@ public class SimpleHandler implements HttpHandler {
                 int httpStatus = ((ServerInternalErrorException) e).getHttpCode();
                 String responseBody = e.getMessage();
                 responseEntity = ResponseEntity.of(responseBody, httpStatus);
+            } else {
+                responseEntity = ResponseEntity.of("", 500);
             }
         } finally {
             sendResponse(exchange, responseEntity);

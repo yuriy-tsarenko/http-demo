@@ -31,6 +31,8 @@ public class SimpleHandler implements HttpHandler {
                 case "DELETE":
                     responseEntity = handeDELETE(exchange);
                     break;
+                default:
+                    throw new ServerInternalErrorException("unsupported http method");
             }
         } catch (Exception e) {
             if (e instanceof ServerInternalErrorException) {

@@ -1,8 +1,8 @@
-package com.goit.exception;
+package com.goit.server.exception;
 
 import lombok.Getter;
 
-public class ServerNotFoundException extends ServerInternalErrorException {
+public class ServerNotFoundException extends ServerException {
     @Getter
     private final int httpCode = 400;
 

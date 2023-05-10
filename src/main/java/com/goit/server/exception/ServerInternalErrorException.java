@@ -1,9 +1,6 @@
-package com.goit.exception;
+package com.goit.server.exception;
 
-import lombok.Getter;
-
-public class ServerInternalErrorException extends RuntimeException {
-    @Getter
+public class ServerInternalErrorException extends ServerException {
     private final int httpCode = 500;
 
     public ServerInternalErrorException(String message) {
@@ -12,5 +9,10 @@ public class ServerInternalErrorException extends RuntimeException {
 
     public ServerInternalErrorException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    @Override
+    public int getHttpCode() {
+        return this.httpCode;
     }
 }

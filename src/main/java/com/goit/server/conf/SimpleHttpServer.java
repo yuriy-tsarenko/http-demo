@@ -1,5 +1,8 @@
-package com.goit.server;
+package com.goit.server.conf;
 
+import com.goit.datasource.Datasource;
+import com.goit.repository.FileEntityRepositoryIml;
+import com.goit.service.FileService;
 import com.sun.net.httpserver.HttpServer;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +17,10 @@ public class SimpleHttpServer {
     public SimpleHttpServer(int port, String path, int nThreads) throws IOException {
         InetSocketAddress localhost = new InetSocketAddress("localhost", port);
         HttpServer httpServer = HttpServer.create(localhost, 0);
-        httpServer.createContext(path, new SimpleHandler());
+        Datasource datasource = new Datasource();
+        FileEntityRepositoryIml fileRepository = new FileEntityRepositoryIml(datasource);
+        FileService fileService = new FileService(fileRepository);
+        httpServer.createContext(path, new SimpleHandler(fileService));
         httpServer.setExecutor(Executors.newFixedThreadPool(nThreads));
         server = httpServer;
     }

@@ -1,12 +1,10 @@
 package com.goit.server.conf;
 
-import com.goit.entity.FileEntity;
 import com.goit.model.FileModel;
-import com.goit.repository.JDBCRepository;
 import com.goit.server.exception.ServerException;
+import com.goit.server.exception.ServerInternalErrorException;
 import com.goit.server.exception.ServerNotFoundException;
 import com.goit.server.model.ResponseEntity;
-import com.goit.server.exception.ServerInternalErrorException;
 import com.goit.service.FileService;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -90,6 +88,26 @@ public class SimpleHandler implements HttpHandler {
         return ResponseEntity.of(data, HttpCode.CREATED);
     }
 
+    private ResponseEntity handeGET(HttpExchange exchange) {
+        String endpoint = exchange.getRequestURI().toString();
+        FileModel data = null;
+        if (endpoint.startsWith("/files")) {
+            // '/files/1'
+            String id = endpoint.split("/")[2];
+            data = fileService.loadById(id);
+        } else if (endpoint.equals("/users")) {
+                   data = getUsers(exchange);
+        } else {
+            throw new ServerNotFoundException(endpoint + " not found");
+        }
+        return ResponseEntity.of(data, HttpCode.OK, true);
+    }
+
+    //TODO
+    private FileModel getUsers(HttpExchange exchange) {
+        return null;
+    }
+
     //TODO
     private Object saveUser(HttpExchange exchange) {
         try {
@@ -99,21 +117,6 @@ public class SimpleHandler implements HttpHandler {
             throw new ServerInternalErrorException("can't read request");
         }
         return null;
-    }
-
-    private ResponseEntity handeGET(HttpExchange exchange) {
-        String endpoint = exchange.getRequestURI().toString();
-        FileModel data = null;
-        if (endpoint.startsWith("/files")) {
-            // '/files/1'
-            String id = endpoint.split("/")[2];
-            data = fileService.loadById(id);
-        } else if (endpoint.equals("/users")) {
-//                    data = getUsers(exchange);
-        } else {
-            throw new ServerNotFoundException(endpoint + " not found");
-        }
-        return ResponseEntity.of(data, HttpCode.OK, true);
     }
 
     private static void sendResponse(HttpExchange exchange, ResponseEntity responseEntity) throws IOException {
